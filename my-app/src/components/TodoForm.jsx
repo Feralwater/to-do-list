@@ -1,21 +1,26 @@
-import React, {useState} from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
-const TodoForm = (props) => {
-  const [input, setInput] = useState("");
-  const handleChange = e => {
-    setInput(e.target.value)
-  }
+const TodoForm = (properties) => {
+  const [input, setInput] = useState('');
 
-  const handleSubmit = e => {
-    e.preventDefault();
+  const inputReference = useRef(null);
+  useEffect(() => {
+    inputReference.current.focus();
+  });
 
-    props.onSubmit({
-      id: Math.floor(Math.random() * 10000),
-      text: input
-    })
-
+  const handleChange = (event) => {
+    setInput(event.target.value);
   };
 
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    properties.onSubmit({
+      id: Math.floor(Math.random() * 10_000),
+      text: input,
+    });
+    setInput('');
+  };
 
   return (
     <form className="todo__form" onSubmit={handleSubmit}>
@@ -26,8 +31,9 @@ const TodoForm = (props) => {
         name="text"
         className="todo__input"
         onChange={handleChange}
+        ref={inputReference}
       />
-      <button className="todo__button">Add todo</button>
+      <button type="submit" className="todo__button">Add todo</button>
     </form>
   );
 };
