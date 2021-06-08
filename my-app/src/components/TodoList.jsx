@@ -3,7 +3,14 @@ import TodoForm from './TodoForm';
 import Todo from './Todo';
 
 const TodoList = () => {
-  const [todos, setTodos] = useState([]);
+  // function useLocalStorage(key, initialValue) {
+  //   const [storedValue, setStoredValue] = useState(() => {
+  //     const item = window.localStorage.getItem(key);
+  //     return item ? JSON.parse(item) : initialValue;
+  //   });
+  // }
+
+  const [todos, setTodos] = useState(JSON.parse(localStorage.getItem('key')) ?? []);
 
   const addTodo = (todo) => {
     if (!todo.text || /^\s*$/.test(todo.text)) {
@@ -11,17 +18,22 @@ const TodoList = () => {
     }
     const newTodos = [todo, ...todos];
     setTodos(newTodos);
+    localStorage.setItem('key', JSON.stringify(newTodos));
   };
   const updateTodo = (todoId, newValue) => {
     if (!newValue.text || /^\s*$/.test(newValue.text)) {
       return;
     }
-    setTodos((previous) => previous.map((item) => (item.id === todoId ? newValue : item)));
+    setTodos((previous) => {
+      const newTodos = previous.map((item) => (item.id === todoId ? newValue : item));
+      localStorage.setItem('key', JSON.stringify(newTodos));
+      return newTodos;
+    });
   };
 
   const removeTodo = (id) => {
     const removeArray = [...todos].filter((todo) => todo.id !== id);
-
+    localStorage.setItem('key', JSON.stringify(removeArray));
     setTodos(removeArray);
   };
 
@@ -32,6 +44,7 @@ const TodoList = () => {
       }
       return todo;
     });
+    localStorage.setItem('key', JSON.stringify(updateTodos));
     setTodos(updateTodos);
   };
 

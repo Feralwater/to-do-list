@@ -1,7 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 
 const TodoForm = (properties) => {
-  const [input, setInput] = useState(properties.edit ? properties.edit.value : '');
+  const isEdit = properties;
+  const [input, setInput] = useState(isEdit.edit ? isEdit.edit.value : '');
 
   const inputReference = useRef(null);
   useEffect(() => {
@@ -25,7 +26,7 @@ const TodoForm = (properties) => {
   return (
     <form className="todo__form" onSubmit={handleSubmit}>
 
-      {properties.edit ? (
+      {isEdit.edit ? (
         <>
           <input
             type="text"

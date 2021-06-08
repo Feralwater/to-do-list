@@ -18,11 +18,14 @@ const Todo = (properties) => {
   if (edit.id) {
     return <TodoForm edit={edit} onSubmit={submitUpdate} />;
   }
-  return properties.todos.map((todo, index) => (
-    <div className={todo.isComplete ? 'todo__row complete' : 'todo__row'} key={index}>
+  return properties.todos.map((todo) => (
+    <div className={todo.isComplete ? 'todo__row complete' : 'todo__row'} key={Math.floor(Math.random() * 100_000).toString()}>
       <div
         key={todo.id}
         onClick={() => {
+          properties.completeTodo(todo.id);
+        }}
+        onKeyDown={() => {
           properties.completeTodo(todo.id);
         }}
       >
